@@ -25,7 +25,7 @@ export const AtomStack = ({
         gestureEnabled: true,
         gestureResponseDistance: 400,
         cardStyle: {
-          backgroundColor: colors.slate[900],
+          backgroundColor: "transparent",
         },
         ...TransitionPresets.SlideFromRightIOS,
       }}

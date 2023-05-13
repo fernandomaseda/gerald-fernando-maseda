@@ -90,29 +90,25 @@ export const EmbeddedStack = ({
           )}deg`,
         },
       ],
-      // borderTopLeftRadius: interpolate(
-      //   progress.value,
-      //   [0, 1],
-      //   [1, 24],
-      //   Animated.Extrapolate.CLAMP
-      // ),
+      borderTopLeftRadius: interpolate(
+        progress.value,
+        [0, 1],
+        [1, 24],
+        Animated.Extrapolate.CLAMP
+      ),
     };
   });
   return (
     <Animated.View
-      style={[
-        {
-          flex: 1,
-        },
-        animatedStyle,
-      ]}
+      className="flex-1 bg-white overflow-hidden"
+      style={[animatedStyle]}
     >
       <Navigator
         screenOptions={{
           headerMode: "screen",
           headerShown: false,
           cardStyle: {
-            backgroundColor: colors.slate[900],
+            backgroundColor: "transparent",
           },
         }}
       >

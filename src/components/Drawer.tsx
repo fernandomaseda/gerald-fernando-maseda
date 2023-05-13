@@ -20,13 +20,11 @@ const useDrawerList = (): DrawerItemProps[][] => {
     [
       {
         label: "Start",
-        onPress: () =>
-          dispatch(DrawerActions.jumpTo("Start", { title: "Start" })),
+        onPress: () => dispatch(DrawerActions.jumpTo("Start")),
       },
       {
         label: "Your Cart",
-        onPress: () =>
-          dispatch(DrawerActions.jumpTo("Your Cart", { title: "Your Cart" })),
+        onPress: () => dispatch(DrawerActions.jumpTo("Your Cart")),
       },
       { label: "Favourite" },
       { label: "Your Orders" },
