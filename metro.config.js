@@ -18,7 +18,9 @@ module.exports = (() => {
       "@screens": path.resolve(__dirname, "src/screens"),
       "@components": path.resolve(__dirname, "src/components"),
       "@utils": path.resolve(__dirname, "src/utils"),
-      "@assets": path.resolve(__dirname, "assets"),
+      "@navigation": path.resolve(__dirname, "src/navigation"),
+      "@assets": path.resolve(__dirname, "src/assets"),
+      "@store": path.resolve(__dirname, "src/store"),
     },
   };
 

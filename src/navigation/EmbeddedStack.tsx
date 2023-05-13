@@ -2,14 +2,19 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack";
-import Animated from "react-native-reanimated";
+import Animated, {
+  EasingNode,
+  useAnimatedStyle,
+  interpolate,
+} from "react-native-reanimated";
 import clsx from "clsx";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { useDrawerProgress } from "@react-navigation/drawer";
 import colors from "tailwindcss/colors";
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 const { Navigator, Screen } = createStackNavigator<{
-  [key: string]: undefined;
+  [key: string]: any;
 }>();
 
 export const EmbeddedStack = ({
@@ -19,44 +24,95 @@ export const EmbeddedStack = ({
 }) => {
   const progress: any = useDrawerProgress();
 
-  const scale = Animated.interpolateNode(progress, {
-    inputRange: [0, 1],
-    outputRange: [1, 1],
+  // const { progress, setProgress } = useDrawerContext();
+
+  // const scale = Animated.interpolateNode(progress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [1, 1],
+  //   extrapolate: Animated.Extrapolate.CLAMP,
+  // });
+
+  // const translateX = Animated.interpolateNode(progress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [0, 230],
+  //   extrapolate: Animated.Extrapolate.CLAMP,
+  // });
+
+  // const translateY = Animated.interpolateNode(progress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [0, 40],
+  //   extrapolate: Animated.Extrapolate.CLAMP,
+  // });
+
+  // const rotate = Animated.interpolateNode(progress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [0, -0.1],
+  //   extrapolate: Animated.Extrapolate.CLAMP,
+  // });
+
+  // const animatedStyle = {
+  //   transform: [{ scale, translateX, translateY, rotate }],
+  // };
+
+  const animatedStyle = useAnimatedStyle((): any => {
+    return {
+      transform: [
+        {
+          translateX: interpolate(
+            progress.value,
+            [0, 1],
+            [0, 40],
+            Animated.Extrapolate.CLAMP
+          ),
+        },
+        {
+          translateY: interpolate(
+            progress.value,
+            [0, 1],
+            [0, 50],
+            Animated.Extrapolate.CLAMP
+          ),
+        },
+        {
+          scale: interpolate(
+            progress.value,
+            [0, 1],
+            [1, 1],
+            Animated.Extrapolate.CLAMP
+          ),
+        },
+        {
+          rotate: `${interpolate(
+            progress.value,
+            [0, 1],
+            [0, -5],
+            Animated.Extrapolate.CLAMP
+          )}deg`,
+        },
+      ],
+      // borderTopLeftRadius: interpolate(
+      //   progress.value,
+      //   [0, 1],
+      //   [1, 24],
+      //   Animated.Extrapolate.CLAMP
+      // ),
+    };
   });
-
-  const translateX = Animated.interpolateNode(progress, {
-    inputRange: [0, 5],
-    outputRange: [0, 190],
-  });
-
-  const translateY = Animated.interpolateNode(progress, {
-    inputRange: [0, 1],
-    outputRange: [0, 40],
-  });
-
-  const rotate = Animated.interpolateNode(progress, {
-    inputRange: [0, 10],
-    outputRange: [0, -1.4],
-  });
-
-  const animatedStyle = {
-    transform: [{ scale, translateX, translateY, rotate }],
-  };
-
   return (
     <Animated.View
-      style={{
-        flex: 1,
-        ...animatedStyle,
-        overflow: "hidden",
-      }}
+      style={[
+        {
+          flex: 1,
+        },
+        animatedStyle,
+      ]}
     >
       <Navigator
         screenOptions={{
           headerMode: "screen",
           headerShown: false,
           cardStyle: {
-            backgroundColor: "transparent",
+            backgroundColor: colors.slate[900],
           },
         }}
       >

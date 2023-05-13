@@ -9,7 +9,7 @@ import Animated from "react-native-reanimated";
 import colors from "tailwindcss/colors";
 
 const { Navigator, Screen } = createStackNavigator<{
-  [key: string]: undefined;
+  [key: string]: any;
 }>();
 
 export const AtomStack = ({

@@ -14,6 +14,23 @@ import { Screen1 } from "@screens/Screen1";
 import { Screen2 } from "@screens/Screen2";
 import { YourCart } from "@screens/YourCart";
 
+import { ContextProvider } from "@store/Context";
+
+/**
+  Rooting Structure:
+
+      * Drawer Left
+          - Start
+              Home (Tab)
+                  HomeMain
+                  Screen1
+                  Screen2
+              Contact (Tab)
+          - Your Cart
+              YourCartMain 
+      * Sign Out
+*/
+
 const TabComponent = () => (
   <TabNavigator>
     <TabScreen name="Home" component={HomeComponent} />
@@ -23,7 +40,11 @@ const TabComponent = () => (
 
 const HomeComponent = () => (
   <AtomStack>
-    <AtomScreen name="HomeMain" component={Home} />
+    <AtomScreen
+      name="HomeMain"
+      component={Home}
+      initialParams={{ title: "Start" }}
+    />
     <AtomScreen name="Screen1" component={Screen1} />
     <AtomScreen name="Screen2" component={Screen2} />
   </AtomStack>
@@ -31,7 +52,11 @@ const HomeComponent = () => (
 
 const YourCartComponent = () => (
   <AtomStack>
-    <AtomScreen name="YourCartMain" component={YourCart} />
+    <AtomScreen
+      name="YourCartMain"
+      component={YourCart}
+      initialParams={{ title: "Your Cart" }}
+    />
   </AtomStack>
 );
 
@@ -63,13 +88,15 @@ const DrawerComponent = () => (
 
 export function Routes() {
   return (
-    <View className="flex-1 bg-transparent">
-      <NavigationContainer>
-        <RootStack>
-          <RootScreen name="Drawer" component={DrawerComponent} />
-          <RootScreen name="Sign Out" component={SignOut} />
-        </RootStack>
-      </NavigationContainer>
-    </View>
+    <ContextProvider>
+      <View className="flex-1 bg-transparent">
+        <NavigationContainer>
+          <RootStack>
+            <RootScreen name="Drawer" component={DrawerComponent} />
+            <RootScreen name="Sign Out" component={SignOut} />
+          </RootStack>
+        </NavigationContainer>
+      </View>
+    </ContextProvider>
   );
 }

@@ -6,7 +6,7 @@ import { MainLayout } from "@components/MainLayout";
 
 export function Screen2() {
   return (
-    <MainLayout>
+    <MainLayout withHeader={false}>
       <View className="flex flex-row items-center">
         <BackButton />
         <Text className="text-2xl font-bold ml-5">Screen 2</Text>

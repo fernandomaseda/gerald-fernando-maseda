@@ -2,7 +2,6 @@ import { useCallback, useState, useEffect } from "react";
 import { Text, View, ScrollView, Alert, BackHandler } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { Header } from "@components/Header";
 import { Checkbox } from "@components/Checkbox";
 
 export function SignOut() {

@@ -1,8 +1,13 @@
 import {
   DrawerContentScrollView,
   useDrawerProgress,
+  DrawerItemList,
 } from "@react-navigation/drawer";
-import { useNavigation, useNavigationState } from "@react-navigation/native";
+import {
+  useNavigation,
+  useNavigationState,
+  DrawerActions,
+} from "@react-navigation/native";
 import { useCallback } from "react";
 import { Dimensions, Text, View, StatusBar } from "react-native";
 import Animated from "react-native-reanimated";
@@ -10,16 +15,18 @@ import colors from "tailwindcss/colors";
 import { DrawerItem, DrawerItemProps } from "./DrawerItem";
 
 const useDrawerList = (): DrawerItemProps[][] => {
-  const { navigate } = useNavigation();
+  const { dispatch, navigate } = useNavigation();
   return [
     [
       {
         label: "Start",
-        onPress: () => navigate("Drawer", { screen: "Start" }),
+        onPress: () =>
+          dispatch(DrawerActions.jumpTo("Start", { title: "Start" })),
       },
       {
         label: "Your Cart",
-        onPress: () => navigate("Drawer", { screen: "Your Cart" }),
+        onPress: () =>
+          dispatch(DrawerActions.jumpTo("Your Cart", { title: "Your Cart" })),
       },
       { label: "Favourite" },
       { label: "Your Orders" },
@@ -33,18 +40,17 @@ const useDrawerList = (): DrawerItemProps[][] => {
   ];
 };
 
-export const Drawer = (): JSX.Element => {
+export const Drawer = ({ ...props }): JSX.Element => {
   const navigation = useNavigation();
   const navigationState = useNavigationState((state) => state);
 
   const drawerList = useDrawerList();
 
+  const drawerRoot = navigationState.routes[navigationState.index]; // DrawerNavigator
+  const drawerState = drawerRoot.state;
+
   const activeScreenName =
-    (
-      navigationState.routes[navigationState.index].params as {
-        [k: string]: string;
-      }
-    )?.screen ?? "Start";
+    drawerState?.routeNames?.[drawerState?.index ?? 0] ?? "Start";
 
   return (
     <DrawerContentScrollView
@@ -53,6 +59,7 @@ export const Drawer = (): JSX.Element => {
         transform: [{ translateY: 30 }],
       }}
       scrollEnabled={false}
+      {...props}
     >
       <Animated.View className="flex-1 pl-6">
         <StatusBar barStyle="dark-content" />

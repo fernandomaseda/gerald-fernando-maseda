@@ -15,7 +15,7 @@ export const DrawerItem: FC<DrawerItemProps> = ({
 }) => (
   <TouchableOpacity
     className={clsx(
-      "flex flex-row py-1 width-[110px] items-center pl-6 mb-5 rounded-lg",
+      "flex flex-row py-1.5 width-[110px] items-center pl-6 mb-5 rounded-lg",
       {
         "bg-red-500/20": isSelected,
       }

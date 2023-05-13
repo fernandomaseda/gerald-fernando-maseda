@@ -3,17 +3,19 @@ import { FC, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import colors from "tailwindcss/colors";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import clsx from "clsx";
 
 interface HeaderProps {
   title: string;
+  classNames?: string;
 }
 
-export const Header: FC<HeaderProps> = ({ title }) => {
+export const Header: FC<HeaderProps> = ({ title, classNames }) => {
   const { dispatch } = useNavigation();
 
   return (
     <>
-      <View className="w-full flex-row items-center">
+      <View className={clsx("w-full flex-row items-center", classNames)}>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => dispatch(DrawerActions.toggleDrawer())}
