@@ -6,13 +6,15 @@ import Animated, {
   EasingNode,
   useAnimatedStyle,
   interpolate,
+  useDerivedValue,
+  useAnimatedReaction,
 } from "react-native-reanimated";
 import clsx from "clsx";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useLayoutEffect } from "react";
 import { useDrawerProgress } from "@react-navigation/drawer";
 import colors from "tailwindcss/colors";
 import { PanGestureHandler } from "react-native-gesture-handler";
-
+import { useAppContext } from "@store/Context";
 const { Navigator, Screen } = createStackNavigator<{
   [key: string]: any;
 }>();
@@ -23,6 +25,22 @@ export const EmbeddedStack = ({
   children: ReactElement | ReactElement[];
 }) => {
   const progress: any = useDrawerProgress();
+  let { progressRef } = useAppContext();
+
+  // sync progressRef (context) with drawer progress
+  const derivedValue = useDerivedValue(() => {
+    return progress.value;
+  });
+
+  useAnimatedReaction(
+    () => {
+      return derivedValue.value;
+    },
+    (value) => {
+      progressRef.value = value;
+    },
+    []
+  );
 
   // const { progress, setProgress } = useDrawerContext();
 
@@ -54,7 +72,7 @@ export const EmbeddedStack = ({
   //   transform: [{ scale, translateX, translateY, rotate }],
   // };
 
-  const animatedStyle = useAnimatedStyle((): any => {
+  const animatedCardStyle = useAnimatedStyle((): any => {
     return {
       transform: [
         {
@@ -101,7 +119,7 @@ export const EmbeddedStack = ({
   return (
     <Animated.View
       className="flex-1 bg-white overflow-hidden"
-      style={[animatedStyle]}
+      style={[animatedCardStyle]}
     >
       <Navigator
         screenOptions={{

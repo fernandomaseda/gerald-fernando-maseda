@@ -1,14 +1,9 @@
-import {
-  DrawerContentScrollView,
-  useDrawerProgress,
-  DrawerItemList,
-} from "@react-navigation/drawer";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 import {
   useNavigation,
   useNavigationState,
   DrawerActions,
 } from "@react-navigation/native";
-import { useCallback } from "react";
 import { Dimensions, Text, View, StatusBar } from "react-native";
 import Animated from "react-native-reanimated";
 import colors from "tailwindcss/colors";
@@ -38,17 +33,19 @@ const useDrawerList = (): DrawerItemProps[][] => {
   ];
 };
 
-export const Drawer = ({ ...props }): JSX.Element => {
+export const Drawer = (): JSX.Element => {
   const navigation = useNavigation();
   const navigationState = useNavigationState((state) => state);
 
   const drawerList = useDrawerList();
 
-  const drawerRoot = navigationState.routes[navigationState.index]; // DrawerNavigator
-  const drawerState = drawerRoot.state;
+  const rootStack = navigationState.routes;
+  const rootScreen = rootStack[navigationState.index]; // DrawerNavigator
+  const drawerState = rootScreen.state;
 
+  //drawer screens || root screens
   const activeScreenName =
-    drawerState?.routeNames?.[drawerState?.index ?? 0] ?? "Start";
+    drawerState?.routeNames?.[drawerState?.index ?? 0] || rootScreen.name;
 
   return (
     <DrawerContentScrollView
@@ -57,9 +54,8 @@ export const Drawer = ({ ...props }): JSX.Element => {
         transform: [{ translateY: 30 }],
       }}
       scrollEnabled={false}
-      {...props}
     >
-      <Animated.View className="flex-1 pl-6">
+      <View className="flex-1 pl-6">
         <StatusBar barStyle="dark-content" />
         <Text className="text-2xl font-bold py-6 text-white w-full text-center">
           Fernando Maseda
@@ -86,7 +82,7 @@ export const Drawer = ({ ...props }): JSX.Element => {
             );
           })}
         </View>
-      </Animated.View>
+      </View>
     </DrawerContentScrollView>
   );
 };

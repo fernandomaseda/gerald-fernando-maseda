@@ -1,30 +1,43 @@
-import { createContext, FC, useContext, useState, ReactNode } from "react";
-import Animated, { Adaptable } from "react-native-reanimated";
+import {
+  createContext,
+  FC,
+  Component,
+  useContext,
+  useState,
+  ReactNode,
+  useRef,
+  MutableRefObject,
+  useEffect,
+} from "react";
+import Animated, {
+  Adaptable,
+  AnimateProps,
+  useSharedValue,
+  SharedValue,
+} from "react-native-reanimated";
+import { ViewProps, ViewComponent } from "react-native";
 
 interface IContext {
-  progress: Adaptable<number>;
-  setProgress: any;
+  progressRef: SharedValue<number>;
 }
 
 const defaultState: IContext = {
-  progress: new Animated.Value(0),
-  setProgress: () => {},
+  progressRef: { value: 0 },
 };
 
 const Context = createContext(defaultState);
 
-export const useDrawerContext = () => useContext(Context);
+export const useAppContext = () => useContext(Context);
 
 interface ContextProps {
   children: ReactNode;
 }
 
 export const ContextProvider: FC<ContextProps> = (props) => {
-  const [progress, setProgress] = useState(new Animated.Value(0));
+  let progressRef = useSharedValue(0);
 
   const values = {
-    progress,
-    setProgress,
+    progressRef,
   };
 
   return <Context.Provider value={values} {...props} />;

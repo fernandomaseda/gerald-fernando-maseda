@@ -17,14 +17,14 @@ export const DrawerItem: FC<DrawerItemProps> = ({
     className={clsx(
       "flex flex-row py-1.5 width-[110px] items-center pl-6 mb-5 rounded-lg",
       {
-        "bg-red-500/20": isSelected,
+        "bg-blue-500/20": isSelected,
       }
     )}
     onPress={onPress}
   >
     <Text
       className={clsx("text-white text-base", {
-        "text-red-500/70": isSelected,
+        "text-blue-500/70": isSelected,
       })}
     >
       {label}

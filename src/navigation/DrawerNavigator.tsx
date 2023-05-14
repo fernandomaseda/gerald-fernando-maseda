@@ -7,7 +7,11 @@ import React, { ReactNode, useEffect } from "react";
 import { View } from "react-native";
 import colors from "tailwindcss/colors";
 import { Drawer } from "@components/Drawer";
-import Animated, { EasingNode } from "react-native-reanimated";
+import Animated, {
+  EasingNode,
+  useAnimatedStyle,
+  interpolate,
+} from "react-native-reanimated";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import {
   PanGestureHandler,
@@ -15,6 +19,7 @@ import {
   PanGestureHandlerEventPayload,
   State,
 } from "react-native-gesture-handler";
+import { useAppContext } from "@store/Context";
 
 const { Navigator, Screen } = createDrawerNavigator<{
   [key: string]: any;
@@ -31,6 +36,7 @@ export const DrawerNavigator = ({
 
   const navigation = useNavigation();
 
+  const { progressRef } = useAppContext();
   // const handleGestureEvent = (
   //   event: GestureEvent<PanGestureHandlerEventPayload>
   // ): void => {
@@ -79,14 +85,40 @@ export const DrawerNavigator = ({
   //   }
   // };
 
+  const animatedDrawerPerentStyle = useAnimatedStyle((): any => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            progressRef.value,
+            [0, 1],
+            [0, 50],
+            Animated.Extrapolate.CLAMP
+          ),
+        },
+      ],
+      borderTopLeftRadius: interpolate(
+        progressRef.value,
+        [0, 1],
+        [1, 24],
+        Animated.Extrapolate.CLAMP
+      ),
+      borderTopRightRadius: interpolate(
+        progressRef.value,
+        [0, 1],
+        [1, 24],
+        Animated.Extrapolate.CLAMP
+      ),
+    };
+  });
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.slate[900],
-      }}
+    <Animated.View
+      style={[animatedDrawerPerentStyle]}
+      className="flex-1 bg-slate-900"
     >
       <Navigator
+        id="LeftDrawer"
         screenOptions={{
           drawerType: "back",
           overlayColor: "transparent",
@@ -104,7 +136,7 @@ export const DrawerNavigator = ({
           //   onGestureEvent: handleGestureEvent,
           //   onHandlerStateChange: handleHandlerStateChange,
           // },
-          swipeEdgeWidth: 60,
+          swipeEdgeWidth: 80,
           swipeEnabled: true,
           swipeMinDistance: 0,
         }}
@@ -112,7 +144,7 @@ export const DrawerNavigator = ({
       >
         {children}
       </Navigator>
-    </View>
+    </Animated.View>
   );
 };
 
